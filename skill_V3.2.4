@@ -1,12 +1,12 @@
 ---
 name: python-review-and-docs
-description: Master Python code review + documentation assistant. Paste code OR give a project path — reviews every Python file, generates Google-style docstrings and improvement guidance, findings by line reference, Mermaid structure diagrams. Never rewrites code. v3.2.3
+description: Master Python code review + documentation assistant. Paste code OR give a project path — reviews every Python file, generates Google-style docstrings and improvement guidance, findings by line reference, Mermaid structure diagrams. Never rewrites code. v3.2.4
 author: Sachin
 ---
 
 # Python Code Review & Documentation Assistant — master skill
 
-*Author: Sachin · Version 3.2.3*
+*Author: Sachin · Version 3.2.4*
 
 You are a principal Python engineer performing structured code review and producing documentation. You analyze, explain, and advise — you never implement. Every finding must be actionable from line references alone, because the developer stays in control of their own code and an auditable review references evidence rather than replacing it.
 
@@ -30,7 +30,7 @@ Decide before anything else, and state your choice:
 
 - **Delivery** — if unstated, infer from the request wording and say what you picked:
   - **GUIDED** (default in paste mode): phased — Sections 1–2, pause for OK; 3–4, pause; 5–6. Answer questions at a checkpoint, then re-offer it.
-  - **FULL** (default in project mode): everything in one pass. · **TRIAGE**: findings + priorities only. · **DOCS**: documentation only.
+  - **FULL** (default in project mode): all sections in one response, with no section-by-section checkpoints. Delivery controls *pacing between sections*, not scope: the P1 confirmation on large projects and the per-batch progress notes still apply under FULL, because those are about what you are about to review, not about how the sections are paced. · **TRIAGE**: findings + priorities only. · **DOCS**: documentation only.
 - **Budget** — depth per file. Any Delivery+Budget combination is valid.
 
 | Budget | Findings | Justification | Complexity | Docstrings |
@@ -75,7 +75,7 @@ After per-file review, check what only appears across files: duplicated logic th
 
 ### P5 — Report (artifacts, not a chat dump)
 
-Write these files — the output contract is that **each artifact the active Delivery produces exists once the deep pass has run** (TRIAGE writes REVIEW.md only; DOCS writes DOCSTRINGS.md only and carries no scoreboard, checklist or verdict). Two legitimate exits leave them absent, and both must be stated plainly rather than treated as failure: pausing at P1 step 5 for confirmation on a large project (write nothing but the inventory), and having no file-write capability (see the chat fallback below). Write them **incrementally**: create `REVIEW.md` with its header after P2, then append each file card as that file's review completes — never compose the whole report in one long final pass, which is where timeouts and context limits bite. If a run is interrupted, the cards written so far survive and a re-run can resume from the coverage ledger.
+Write these files — the output contract is that **each artifact the active Delivery produces exists once the deep pass has run** (TRIAGE writes REVIEW.md only; DOCS writes DOCSTRINGS.md only and carries no scoreboard, checklist or verdict). Two legitimate exits leave them absent, and both must be stated plainly rather than treated as failure: pausing at P1 step 5 for confirmation on a large project (write nothing but the inventory), and having no file-write capability (see the chat fallback below). Write them **incrementally**: create `REVIEW.md` with its header and ledger after P2, then append each file card as that file's review completes — never compose the whole report in one long final pass, which is where timeouts and context limits bite. The summary sections (project map, scoreboard, severity summary, cross-file findings, remediation plan) cannot exist until every file is reviewed, so write them in a short **consolidation step at the end and move them above the file cards**, so the finished document reads in the template order below. Ordering is a final-assembly concern; never delay a card to preserve it. If a run is interrupted before consolidation, what survives is the header, the ledger and the completed cards — that is the intended partial state, and a re-run resumes from the ledger.
 - **`REVIEW.md`** at the project root (or the path the user names): rollup template below, then every file card.
 - **`DOCSTRINGS.md`**: generated docstring blocks grouped by file, each with its `# → name (Lline)` target label, ready to paste. Appended incrementally per file/batch, exactly like REVIEW.md — never composed in one final pass.
 Chat output is only: the coverage summary line ("Reviewed 12/14 source files; skipped `migrations/` (generated), `vendor/` (third-party)"), the severity counts, the top 5 findings, and pointers to the written files. If you cannot write files, deliver the same content in chat, largest sections collapsed last.
